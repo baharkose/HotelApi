@@ -38,7 +38,9 @@ dbConnection();
 // Middlewares
 
 // Accept JSON
-app.use(express.json());
+
+// gövdedeki json nesnelerini otomatik js nesnelerine dönüştür.
+app.use(express.json()); // json parsing
 
 //errorHandler
 // app.use(require("./src/middlewares/errorHandler"))
