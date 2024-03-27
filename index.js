@@ -28,7 +28,6 @@ require("express-async-errors");
 /* ------------------------------------------------------- */
 
 // Configurations
-
 // Connect to DB
 const { dbConnection } = require("./src/configs/dbConnection");
 dbConnection();
@@ -42,8 +41,19 @@ dbConnection();
 // gövdedeki json nesnelerini otomatik js nesnelerine dönüştür.
 app.use(express.json()); // json parsing
 
+// logger
+app.use(require("./src/middlewares/logger"));
+
 //errorHandler
-// app.use(require("./src/middlewares/errorHandler"))
+app.use(require("./src/middlewares/errorHandler"));
+
+//Routes
+app.all("/", (req, res) => {
+  res.send({
+    error: false,
+    message: "welcome to Dessert Api",
+  });
+});
 
 // RUN SERVER
 app.listen(PORT, () => console.log("http://127.0.0.1:" + PORT));
