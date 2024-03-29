@@ -327,6 +327,9 @@
                 "roomId": {
                   "example": "any"
                 },
+                "departure_date": {
+                  "example": "any"
+                },
                 "arrival_date": {
                   "example": "any"
                 }
@@ -335,9 +338,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "201": {
             "description": "Created"
           }

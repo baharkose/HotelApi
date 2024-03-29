@@ -1,7 +1,6 @@
-"use strict";
-
+"use strict"
 /* -------------------------------------------------------
-    NODEJS EXPRESS | HOTEL Api
+             Hotel Api
 ------------------------------------------------------- */
 /*
     $ cp .env-sample .env
@@ -10,78 +9,51 @@
     $ npm i morgan swagger-autogen swagger-ui-express redoc-express
     $ mkdir logs
     $ nodemon
-    -> JWT
-    $ npm i jsonwebtoken 
-    https://drawsql.app/ -> ERD
 */
-
-const express = require("express");
-const app = express();
-
+const express = require('express')
+const app = express()
 /* ------------------------------------------------------- */
-// Required Modules
-
-// envVariables to process.env
-require("dotenv").config();
-const PORT = process.env?.PORT || 8000;
-
-// asyncErrors to ErrorHandler
-require("express-async-errors");
-
+// Required Modules:
+// envVariables to process.env:
+require('dotenv').config()
+const PORT = process.env?.PORT || 5000
+// asyncErrors to errorHandler:
+require('express-async-errors')
 /* ------------------------------------------------------- */
-
-// Configurations
-// Connect to DB
-const { dbConnection } = require("./src/configs/dbConnection");
-dbConnection();
-
+// Configrations:
+// Connect to DB:
+const { dbConnection } = require('./src/configs/dbConnection')
+dbConnection()
 /* ------------------------------------------------------- */
-
-// Middlewares
-
-// Accept JSON
-
-// gövdedeki json nesnelerini otomatik js nesnelerine dönüştür.
-app.use(express.json()); // json parsing
-
-// logger
-app.use(require("./src/middlewares/logger"));
-
+// Middlewares:
+// Accept JSON:
+app.use(express.json())
 // Logger:
-app.use(require("./src/middlewares/logger"));
-
-// Auhentication:
-app.use(require("./src/middlewares/authentication"));
-
+app.use(require('./src/middlewares/logger'))
 // findSearchSortPage / res.getModelList:
-app.use(require("./src/middlewares/queryHandler"));
-
+app.use(require('./src/middlewares/queryHandler'))
 /* ------------------------------------------------------- */
 // Routes:
 // routes/index.js:
-app.use("/", require("./src/routes/"));
-
-//HomePath
+app.use('/', require('./src/routes/'))
 // HomePath:
-app.all("/", (req, res) => {
-  res.send({
-    error: false,
-    message: "Welcome to Hotel API",
-    docs: {
-      swagger: "/documents/swagger",
-      redoc: "/documents/redoc",
-      json: "/documents/json",
-    },
-    user: req.user,
-  });
-});
-
-//errorHandler
-app.use(require("./src/middlewares/errorHandler"));
-
-// RUN SERVER
-app.listen(PORT, () => console.log("http://127.0.0.1:" + PORT));
-
+app.all('/', (req, res) => {
+    res.send({
+        error: false,
+        message: 'Welcome to HOTEL API',
+        docs: {
+            swagger: "/documents/swagger",
+            redoc: "/documents/redoc",
+            json: "/documents/json",
+        },
+        user: req.user,
+    })
+})
+/* ------------------------------------------------------- */
+// errorHandler:
+app.use(require('./src/middlewares/errorHandler'))
+// RUN SERVER:
+app.listen(PORT, () => console.log('http://127.0.0.1:' + PORT))
 /* ------------------------------------------------------- */
 // Syncronization (must be in commentLine):
 // require('./src/helpers/sync')
