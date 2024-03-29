@@ -1,7 +1,7 @@
 "use strict";
 
 /* -------------------------------------------------------
-    NODEJS EXPRESS | Dessert Api
+    NODEJS EXPRESS | HOTEL Api
 ------------------------------------------------------- */
 /*
     $ cp .env-sample .env
@@ -51,7 +51,7 @@ app.use(require("./src/middlewares/errorHandler"));
 app.all("/", (req, res) => {
   res.send({
     error: false,
-    message: "welcome to Dessert Api",
+    message: "welcome to HOTEL Api",
   });
 });
 
