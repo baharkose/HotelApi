@@ -2,15 +2,15 @@
 /* -------------------------------------------------------
     NODEJS EXPRESS | HotelApi
 ------------------------------------------------------- */
-// Order Controller:
+// Reservation Controller:
 
-const Order = require("../models/order");
+const Reservation = require("../models/reservation");
 
 module.exports = {
   list: async (req, res) => {
     /*
-            #swagger.tags = ["Orders"]
-            #swagger.summary = "List Orders"
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "List Reservations"
             #swagger.description = `
                 You can send query with endpoint for filter[], search[], sort[], page and limit.
                 <ul> Examples:
@@ -22,11 +22,11 @@ module.exports = {
             `
         */
 
-    const data = await res.getModelList(Order, {}, ["userId", "pizzaId"]);
+    const data = await res.getModelList(Reservation, {}, ["userId", "roomId"]);
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Order),
+      details: await res.getModelListDetails(Reservation),
       data,
     });
   },
@@ -35,11 +35,11 @@ module.exports = {
 
   create: async (req, res) => {
     /*
-            #swagger.tags = ["Orders"]
-            #swagger.summary = "Create Order"
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "Create Reservation"
         */
 
-    const data = await Order.create(req.body);
+    const data = await Reservation.create(req.body);
 
     res.status(201).send({
       error: false,
@@ -49,11 +49,11 @@ module.exports = {
 
   read: async (req, res) => {
     /*
-            #swagger.tags = ["Orders"]
-            #swagger.summary = "Get Single Order"
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "Get Single Reservation"
         */
 
-    const data = await Order.findOne({ _id: req.params.id }).populate([
+    const data = await Reservation.findOne({ _id: req.params.id }).populate([
       "userId",
       "pizzaId",
     ]);
@@ -66,28 +66,28 @@ module.exports = {
 
   update: async (req, res) => {
     /*
-            #swagger.tags = ["Orders"]
-            #swagger.summary = "Update Order"
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "Update Reservation"
         */
 
-    const data = await Order.updateOne({ _id: req.params.id }, req.body, {
+    const data = await Reservation.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
 
     res.status(202).send({
       error: false,
       data,
-      new: await Order.findOne({ _id: req.params.id }),
+      new: await Reservation.findOne({ _id: req.params.id }),
     });
   },
 
   delete: async (req, res) => {
     /*
-            #swagger.tags = ["Orders"]
-            #swagger.summary = "Delete Order"
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "Delete Reservation"
         */
 
-    const data = await Order.deleteOne({ _id: req.params.id });
+    const data = await Reservation.deleteOne({ _id: req.params.id });
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
