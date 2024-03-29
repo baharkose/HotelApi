@@ -33,6 +33,8 @@ module.exports = {
     });
   },
 
+
+  // ! BOŞ ODALARA GÖRE
   // CRUD:
 
   create: async (req, res) => {
@@ -43,7 +45,11 @@ module.exports = {
 
     const checkRoom = await Room.findOne({ _id: req.body.roomId });
     console.log(checkRoom.isEmpty);
-    if (checkRoom && checkRoom.isEmpty) {
+    if (
+      checkRoom &&
+      checkRoom.isEmpty &&
+      checkRoom.departure_date >= req.body.arrival_date
+    ) {
       const data = await Reservation.create(req.body);
       // console.log(data);
 
@@ -107,6 +113,8 @@ module.exports = {
             #swagger.summary = "Delete Reservation"
         */
 
+    
+            
     //! reservasyon silindiğinde odayı da güncelle.
     const getData = await Reservation.findOne({ _id: req.params.id }).populate(
       "roomId"

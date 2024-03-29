@@ -12,6 +12,7 @@
     $ nodemon
     -> JWT
     $ npm i jsonwebtoken 
+    https://drawsql.app/ -> ERD
 */
 
 const express = require("express");
