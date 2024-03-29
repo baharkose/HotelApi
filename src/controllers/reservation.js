@@ -57,6 +57,7 @@ module.exports = {
       res.status(201).send({
         error: false,
         data,
+        checkRoom,
       });
     } else {
       res.status(200).send({
