@@ -19,7 +19,13 @@ module.exports = {
                     <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
                     <li>URL/?<b>page=2&limit=1</b></li>
                 </ul>
+
+                schema: {
+                    username: ",
+                    password: "1234"
+                }
             `
+
         */
 
     const data = await res.getModelList(User);

@@ -33,10 +33,10 @@ const ReservationSchema = new mongoose.Schema(
     night: {
       type: Number,
       default: function () {
-        return this.departure_date - this.arrival_date;
+        return (this.departure_date - this.arrival_date) / (1000 * 3600 * 24);
       }, // Create
       transform: function () {
-        return this.arrival_date - this.departure_date;
+        return (this.departure_date - this.arrival_date) / (1000 * 3600 * 24);
       }, // Update
     },
     price: {

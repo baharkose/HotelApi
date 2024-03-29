@@ -5,6 +5,7 @@
 // Reservation Controller:
 
 const Reservation = require("../models/reservation");
+const Room = require("../models/room");
 
 module.exports = {
   // ! burada customFilter yapılcak, list ve read için
@@ -40,12 +41,29 @@ module.exports = {
             #swagger.summary = "Create Reservation"
         */
 
-    const data = await Reservation.create(req.body);
+    const checkRoom = await Room.findOne({ _id: req.body.roomId });
+    console.log(checkRoom.isEmpty);
+    if (checkRoom && checkRoom.isEmpty) {
+      const data = await Reservation.create(req.body);
+      // console.log(data);
 
-    res.status(201).send({
-      error: false,
-      data,
-    });
+      const roomId = data.roomId;
+      const updateData = await Room.updateOne(
+        { _id: roomId },
+        { isEmpty: false }
+      );
+      // console.log(updateData);
+
+      res.status(201).send({
+        error: false,
+        data,
+      });
+    } else {
+      res.status(200).send({
+        error: false,
+        message: "the room is not empty",
+      });
+    }
   },
 
   read: async (req, res) => {
@@ -56,7 +74,7 @@ module.exports = {
 
     const data = await Reservation.findOne({ _id: req.params.id }).populate([
       "userId",
-      "pizzaId",
+      "roomId",
     ]);
 
     res.status(200).send({
