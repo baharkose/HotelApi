@@ -16,11 +16,9 @@ router.use("/users", require("./user"));
 router.use("/tokens", require("./token"));
 
 // order:
-router.use("/orders", require("./order"));
+router.use("/reservations", require("./reservation"));
 // pizza:
-router.use("/pizzas", require("./pizza"));
-// topping:
-router.use("/toppings", require("./topping"));
+router.use("/rooms", require("./rooms"));
 
 // document:
 router.use("/documents", require("./document"));
