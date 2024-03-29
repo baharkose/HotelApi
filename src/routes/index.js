@@ -18,7 +18,7 @@ router.use("/tokens", require("./token"));
 // order:
 router.use("/reservations", require("./reservation"));
 // pizza:
-router.use("/rooms", require("./rooms"));
+router.use("/rooms", require("./room"));
 
 // document:
 router.use("/documents", require("./document"));
