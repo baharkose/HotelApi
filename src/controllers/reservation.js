@@ -107,11 +107,24 @@ module.exports = {
             #swagger.summary = "Delete Reservation"
         */
 
+    //! reservasyon silindiğinde odayı da güncelle.
+    const getData = await Reservation.findOne({ _id: req.params.id }).populate(
+      "roomId"
+    );
     const data = await Reservation.deleteOne({ _id: req.params.id });
-
-    res.status(data.deletedCount ? 204 : 404).send({
-      error: !data.deletedCount,
-      data,
-    });
+    console.log(data);
+    if (data.deletedCount) {
+      console.log(getData);
+      const updateRoom = await Room.updateOne(
+        { _id: getData.roomId },
+        { isEmpty: true }
+      );
+      res.status(data.deletedCount ? 204 : 404).send({
+        error: !data.deletedCount,
+        message: `${req.params.id} is deleted`,
+        data,
+        updateRoom,
+      });
+    }
   },
 };
