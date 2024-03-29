@@ -7,6 +7,7 @@
 const User = require("../models/user");
 const Token = require("../models/token");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   login: async (req, res) => {
@@ -29,7 +30,7 @@ module.exports = {
     if ((username || email) && password) {
       const user = await User.findOne({ $or: [{ username }, { email }] });
 
-      if (user && user.password == passwordEncrypt(password)) {
+      if (user && user.password == password) {
         if (user.isActive) {
           // /* SIMPLE TOKEN */
 
