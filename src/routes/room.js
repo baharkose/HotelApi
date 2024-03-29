@@ -10,6 +10,9 @@ const room = require("../controllers/room");
 
 // URL: /pizzas
 
+
+// ! odaları listeleme herkes, admin create, update, delete, idye göre okuma herkes..
+
 router.route("/").get(room.list).post(room.create);
 
 router

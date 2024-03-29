@@ -21,19 +21,19 @@ const UserSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        // validate: [
-        //     (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password),
-        //     'Password type is not correct.'
-        // ],
+        validate: [
+            (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password),
+            'Password type is not correct.'
+        ],
         // set: passwordEncrypt
-        //? Yöntem-1:
-        set: (password) => {
-            if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)) {
-                return passwordEncrypt(password)
-            } else {
-                throw new Error('Password type is not correct.')
-            }
-        },
+        // //? Yöntem-1:
+        // set: (password) => {
+        //     if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)) {
+        //         return passwordEncrypt(password)
+        //     } else {
+        //         throw new Error('Password type is not correct.')
+        //     }
+        // },
         //? Yöntem-2:
         // set: (password) => {
         //     if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)) {

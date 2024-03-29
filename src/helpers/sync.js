@@ -1,15 +1,17 @@
-"use strict";
+// "use strict"
 /* -------------------------------------------------------
-    NODEJS EXPRESS | Hotel Api
+    NODEJS EXPRESS | CLARUSWAY FullStack Team
 ------------------------------------------------------- */
 // sync():
 
-module.exports = async function () {
-  return null;
+module.exports = async function() {
 
-  /* CLEAR DATABASE */
-  const { mongoose } = require("../configs/dbConnection");
-  await mongoose.connection.dropDatabase();
-  console.log("- Database and all data DELETED!");
-  /* CLEAR DATABASE */
-};
+    return null;
+
+    /* CLEAR DATABASE */
+    const { mongoose } = require('../configs/dbConnection')
+    await mongoose.connection.dropDatabase()
+    console.log('- Database and all data DELETED!')
+    /* CLEAR DATABASE */
+
+}

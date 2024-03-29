@@ -31,24 +31,25 @@ module.exports = {
 
       if (user && user.password == passwordEncrypt(password)) {
         if (user.isActive) {
-          /* SIMPLE TOKEN */
+          // /* SIMPLE TOKEN */
 
-          let tokenData = await Token.findOne({ userId: user.id });
+          // let tokenData = await Token.findOne({ userId: user.id });
 
-          if (!tokenData)
-            tokenData = await Token.create({
-              userId: user.id,
-              token: passwordEncrypt(user.id + Date.now()),
-            });
+          // if (!tokenData)
+          //   tokenData = await Token.create({
+          //     userId: user.id,
+          //     token: passwordEncrypt(user.id + Date.now()),
+          //   });
 
-          /* SIMPLE TOKEN */
+          // /* SIMPLE TOKEN */
 
           /* JWT  */
 
           const accessInfo = {
             key: process.env.ACCESS_KEY,
-            time: process.env?.ACCESS_EXP || "30m",
+            time: process.env?.ACCESS_EXP || "30s",
             data: {
+              // mongoose gereği bazı yerlerde kabul ediyor _ ifadesini, garantiye almak için
               _id: user._id,
               id: user.id,
               username: user.username,
@@ -61,7 +62,7 @@ module.exports = {
 
           const refreshInfo = {
             key: process.env.REFRESH_KEY,
-            time: process.env?.REFRESH_EXP || "30m",
+            time: process.env?.REFRESH_EXP || "3d",
             data: {
               id: user.id,
               password: user.password, // encrypted password
@@ -80,7 +81,10 @@ module.exports = {
 
           res.status(200).send({
             error: false,
-            token: tokenData.token,
+            bearer: {
+              access: accessToken,
+              refresh: refreshToken,
+            },
             user,
           });
         } else {
@@ -120,6 +124,7 @@ module.exports = {
           res.status(200).send({
             error: false,
             bearer: {
+              // mongooseun json ile jwtnin jsonu eşleşmediği için tekrar dbdeki user jsona çevrildi.
               access: jwt.sign(user.toJSON(), process.env.ACCESS_KEY, {
                 expiresIn: process.env?.ACCESS_EXP || "30m",
               }),

@@ -7,6 +7,7 @@
 const Reservation = require("../models/reservation");
 
 module.exports = {
+  // ! burada customFilter yapılcak, list ve read için
   list: async (req, res) => {
     /*
             #swagger.tags = ["Reservations"]

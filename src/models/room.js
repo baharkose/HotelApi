@@ -13,16 +13,19 @@ const RoomSchema = new mongoose.Schema(
       unique: true,
     },
     image: {
-      type: [],
+      type: [], //Array
     },
     bedType: {
       type: Number,
       required: true,
-      unique: true,
     },
     price: {
       type: Number,
       required: true,
+    },
+    isEmpty: {
+      type: Boolean,
+      default: true,
     },
   },
   {

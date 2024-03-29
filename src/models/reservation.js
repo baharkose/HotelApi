@@ -23,18 +23,20 @@ const ReservationSchema = new mongoose.Schema(
     },
     departure_date: {
       type: Date,
+      required: true,
     },
     guest_number: {
       type: Number,
       required: true,
+      default: 1,
     },
     night: {
       type: Number,
       default: function () {
-        return this.arrival_date - this.departure_date - 1;
+        return this.departure_date - this.arrival_date;
       }, // Create
       transform: function () {
-        return this.arrival_date - this.departure_date - 1;
+        return this.arrival_date - this.departure_date;
       }, // Update
     },
     price: {
@@ -44,10 +46,10 @@ const ReservationSchema = new mongoose.Schema(
     totalPrice: {
       type: Number,
       default: function () {
-        return this.price * this.night;
+        return this.price * this.night * this.guest_number;
       }, // Create
       transform: function () {
-        return this.price * this.night;
+        return this.price * this.night * this.guest_number;
       }, // Update
     },
   },

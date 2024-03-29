@@ -9,6 +9,9 @@ const router = require("express").Router();
 const reservation = require("../controllers/reservation");
 
 // URL: /reservations
+// ! yapılacaklar
+// + login olanalr, listeleme, oluşturma, okuma, ama başkasınınkini görmemesi lazım. onu controllerda halladeceğiz.
+//+ admin olanlar, güncelleme,silme
 
 router.route("/").get(reservation.list).post(reservation.create);
 
