@@ -8,6 +8,9 @@ const router = require("express").Router();
 
 const auth = require("../controllers/auth");
 
+const passwordEncrypt = require("../helpers/passwordEncrypt");
+const jwt = require("jsonwebtoken");
+
 // URL: /auth
 
 // Login/logout:

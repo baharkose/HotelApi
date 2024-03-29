@@ -10,6 +10,8 @@
     $ npm i morgan swagger-autogen swagger-ui-express redoc-express
     $ mkdir logs
     $ nodemon
+    -> JWT
+    $ npm i jsonwebtoken 
 */
 
 const express = require("express");
