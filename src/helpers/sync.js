@@ -6,7 +6,7 @@
 
 // module.exports = async function() {
 
-//     return null;
+    return null;
 
 //     /* CLEAR DATABASE */
 //     const { mongoose } = require('../configs/dbConnection')
