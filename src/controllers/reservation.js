@@ -35,58 +35,70 @@ module.exports = {
             #swagger.tags = ["Reservations"]
             #swagger.summary = "Create Reservation"
         */
-            const checkRoom1 = await Reservation.find({ roomId: req.body.roomId });
-    const checkRoom = await Reservation.findOne({ roomId: req.body.roomId , $nor: [
-          { arrival_date: { $gt: req.body.departure_date } },
-           { departure_date: { $lt: req.body.arrival_date } }
-       ] });
-    console.log(checkRoom);
-    console.log("room1" , checkRoom1);
-        if (checkRoom) {
-          res.errorStatusCode=400
-          throw new Error("message: the room is not empty")
-        } else {
-          const data = await Reservation.create(req.body);
-          res.status(201).send({
-            error: false,
-            data
-          })
-        }
-      },
-  //   if (
-  //     checkRoom &&
-  //     checkRoom.isEmpty &&
-  //     checkRoom.departure_date >= req.body.arrival_date
-  //   ) {
-  //     const data = await Reservation.create(req.body);
-  //     // console.log(data);
-  //     const roomId = data.roomId;
-  //     const updateData = await Room.updateOne(
-  //       { _id: roomId },
-  //       { isEmpty: false }
-  //     );
-  //     // console.log(updateData);
-  //     res.status(201).send({
-  //       error: false,
-  //       data,
-  //       checkRoom,
-  //     });
-  //   } else {
-  //     res.status(200).send({
-  //       error: false,
-  //       message: "the room is not empty",
-  //     });
-  //   }
-  // },
-//   $nor: [
-//     { startDate: { $gt: req.body.endDate } },
-//     { endDate: { $lt: req.body.startDate } }
-// ]
+    try {
+      const { roomId, arrival_date, departure_date, guest_number } = req.body;
+
+      // İlgili odayı sorgula
+      const room = await Room.findById(roomId);
+      if (!room) {
+        return res.status(404).send({ error: true, message: "Room not found" });
+      }
+
+      // Oda müsaitlik kontrolü
+      const checkRoom = await Reservation.findOne({
+        roomId: roomId,
+        $nor: [
+          { arrival_date: { $gt: departure_date } },
+          { departure_date: { $lt: arrival_date } },
+        ],
+      });
+
+      if (checkRoom) {
+        return res
+          .status(400)
+          .send({
+            error: true,
+            message: "The room is not empty for the given dates",
+          });
+      }
+
+      // Yatak tipine göre misafir sayısını kontrol et
+      if (
+        (room.bedType === 1 && guest_number > 1) ||
+        (room.bedType === 2 && guest_number > 2)
+      ) {
+        return res
+          .status(400)
+          .send({
+            error: true,
+            message:
+              "Maximum guest number exceeded for the selected room bed type",
+          });
+      }
+
+      // Rezervasyon oluştur
+      const data = await Reservation.create(req.body);
+
+      res.status(201).send({
+        error: false,
+        data,
+      });
+    } catch (error) {
+      res.status(500).send({ error: true, message: error.message });
+    }
+  },
+
   read: async (req, res) => {
     /*
             #swagger.tags = ["Reservations"]
             #swagger.summary = "Get Single Reservation"
         */
+    
+    // Başka bir kullanıcı datasını görmesini engelleme
+    let customFilter = {}
+    if(!req.user.isAdmin){
+      
+    }
     const data = await Reservation.findOne({ _id: req.params.id }).populate([
       "userId",
       "roomId",
