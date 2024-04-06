@@ -54,12 +54,10 @@ module.exports = {
       });
 
       if (checkRoom) {
-        return res
-          .status(400)
-          .send({
-            error: true,
-            message: "The room is not empty for the given dates",
-          });
+        return res.status(400).send({
+          error: true,
+          message: "The room is not empty for the given dates",
+        });
       }
 
       // Yatak tipine göre misafir sayısını kontrol et
@@ -67,13 +65,11 @@ module.exports = {
         (room.bedType === 1 && guest_number > 1) ||
         (room.bedType === 2 && guest_number > 2)
       ) {
-        return res
-          .status(400)
-          .send({
-            error: true,
-            message:
-              "Maximum guest number exceeded for the selected room bed type",
-          });
+        return res.status(400).send({
+          error: true,
+          message:
+            "Maximum guest number exceeded for the selected room bed type",
+        });
       }
 
       // Rezervasyon oluştur
@@ -93,15 +89,18 @@ module.exports = {
             #swagger.tags = ["Reservations"]
             #swagger.summary = "Get Single Reservation"
         */
-    
+
     // Başka bir kullanıcı datasını görmesini engelleme
-    let customFilter = {}
-    if(!req.user.isAdmin){
-      
+    let customFilter = {};
+    if (!req.user.isAdmin) {
+      customFilter = { userId: req.user._id };
     }
-    const data = await Reservation.findOne({ _id: req.params.id }).populate([
-      "userId",
-      "roomId",
+    const data = await Reservation.findOne({
+      _id: req.params.id,
+      ...customFilter,
+    }).populate([
+      { path: "userId", select: "username firstName lastName" },
+      { path: "roomId", select: "image bedType price" },
     ]);
     res.status(200).send({
       error: false,
@@ -113,6 +112,8 @@ module.exports = {
             #swagger.tags = ["Reservations"]
             #swagger.summary = "Update Reservation"
         */
+
+    
     const data = await Reservation.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
