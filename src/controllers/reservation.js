@@ -113,7 +113,13 @@ module.exports = {
             #swagger.summary = "Update Reservation"
         */
 
-    
+    // Admin değilse rezervasyona ait userId değiştirilemez:
+    if (!req.user.isAdmin) {
+      delete req.body.userId;
+    }
+    // updatedId verisini req.user'dan al:
+    req.body.updatedId = req.user._id;
+
     const data = await Reservation.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
